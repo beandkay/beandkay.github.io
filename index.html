@@ -33,7 +33,7 @@
         <section data-auto-animate>
             <h2 data-id="code-title">Quick recap</h2>
             <h4>Torch model</h4>
-            <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers>
+            <pre data-id="code-animation"><code class="python" data-trim data-line-numbers>
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
@@ -187,7 +187,7 @@ for epoch in range(EPOCHS):
         <section data-auto-animate>
             <h2 data-id="code-title">Wait, why the code stopped working?</h2>
             <p class="fragment" data-id="code-title">Oh, we've commented line 5</p>
-            <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers="5">
+            <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers>
 for epoch in range(EPOCHS):
     loss = 0
     for i, data in enumerate(trainloader, 0):
@@ -429,7 +429,7 @@ trainer = Trainer(gpus=2, num_nodes=2, distributed_backend='ddp2')
             <p>Feel free to ask any question</p>
             <p>
                 <small>Piotr Mazurek</small><br/>
-                Presentation available at: <small><a href="">...</a></small><br/>
+                Presentation available at: <small><a href="https://tugot17.github.io/Pytorch-Lightning-Presentation">tugot17.github.io/Pytorch-Lightning-Presentation</a></small><br/>
             </p>
         </section>
     </div>

@@ -24,15 +24,15 @@
         </section>
 
         <section data-auto-animate>
-            <h2 data-id="code-title">Initial assumptions</h2>
+            <h3 data-id="code-title">Initial assumptions</h3>
             <p class="fragment">You know how "standard" DL training loop looks like</p>
             <p class="fragment">You (more-less) know how PyTorch works</p>
 
         </section>
 
         <section data-auto-animate>
-            <h2 data-id="code-title">Quick recap</h2>
-            <h4>Torch model</h4>
+            <h3 data-id="code-title">Quick recap</h3>
+            <p>Torch model</p>
             <pre data-id="code-animation"><code class="python" data-trim data-line-numbers>
 class Net(nn.Module):
     def __init__(self):
@@ -52,9 +52,9 @@ class Net(nn.Module):
         </section>
 
         <section data-auto-animate>
-            <h2 data-id="code-title">Quick recap</h2>
-            <h4>Torch training loop</h4>
-            <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers>
+            <h3 data-id="code-title">Quick recap</h3>
+            <p>Torch training loop</p>
+            <pre data-id="code-animation"><code class="python" data-trim data-line-numbers>
 for epoch in range(EPOCHS):
     for i, data in enumerate(trainloader, 0):
         inputs, labels = data
@@ -73,11 +73,14 @@ for epoch in range(EPOCHS):
         </section>
 
         <section data-auto-animate>
-            <h2 data-id="code-title">Fine but</h2>
+            <h3 data-id="code-title">Fine but</h3>
+
             <p class="fragment">I heard that the lr scheduler is a cool feature</p>
+
             <p class="fragment">Can we add that?</p>
-            <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers="11">
-scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
+
+            <pre data-id="code-animation" class="fragment"><code class="python" data-trim data-line-numbers="1, 11">
+scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
 for epoch in range(EPOCHS):
     for i, data in enumerate(trainloader, 0):
         inputs, labels = data
@@ -93,8 +96,9 @@ for epoch in range(EPOCHS):
 
 
         <section data-auto-animate>
-            <h4 data-id="code-title">And how about gradient clipping?</h4>
-            <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers="10">
+            <h3 data-id="code-title">And how about gradient clipping?</h3>
+
+            <pre data-id="code-animation" class="fragment"><code class="python" data-trim data-line-numbers="10">
 scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
 for epoch in range(EPOCHS):
     for i, data in enumerate(trainloader, 0):
@@ -111,8 +115,9 @@ for epoch in range(EPOCHS):
         </section>
 
         <section data-auto-animate>
-            <p data-id="code-title">Can also add the gradient accumulation mechanism?</p>
-            <pre class="fragment" data-id="code-animation"><code class="python" data-trim
+            <h3 data-id="code-title">Can also add the gradient accumulation mechanism?</h3>
+
+            <pre data-id="code-animation" class="fragment"><code class="python" data-trim
                                                                  data-line-numbers="3, 9, 10, 11">
 scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
 for epoch in range(EPOCHS):
@@ -133,8 +138,8 @@ for epoch in range(EPOCHS):
         </section>
 
         <section data-auto-animate>
-            <h2 data-id="code-title">And maybe EarlyStopping?</h2>
-            <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers>
+            <h3 data-id="code-title">And maybe EarlyStopping?</h3>
+            <pre data-id="code-animation" class="fragment"><code class="python" data-trim data-line-numbers>
 from suspicious_not_tested_github_repo import EarlyStopping
 
 es = EarlyStopping(no_documentation_whatsoever=True)
@@ -142,8 +147,9 @@ es = EarlyStopping(no_documentation_whatsoever=True)
         </section>
 
         <section data-auto-animate>
-            <h4 data-id="code-title">One more thing, I need Tensorboard logging</h4>
-            <pre data-id="code-animation"><code class="python" data-trim data-line-numbers>
+            <h3 data-id="code-title">One more thing, I need Tensorboard logging</h3>
+
+            <pre data-id="code-animation" class="fragment"><code class="python" data-trim data-line-numbers>
 scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
 writer = SummaryWriter()
 
@@ -173,7 +179,7 @@ for epoch in range(EPOCHS):
 
         <section data-auto-animate>
             <h4 data-id="code-title">Actually, I would rather use W&B then Tensorboard, can we change that?</h4>
-            <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers>
+            <pre data-id="code-animation" class="fragment"><code class="python" data-trim data-line-numbers>
 for epoch in range(EPOCHS):
     ...
 
@@ -185,9 +191,11 @@ for epoch in range(EPOCHS):
         </section>
 
         <section data-auto-animate>
-            <h2 data-id="code-title">Wait, why the code stopped working?</h2>
+            <h3 data-id="code-title">Wait, why the code stopped working?</h3>
+
             <p class="fragment" data-id="code-title">Oh, we've commented line 5</p>
-            <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers>
+
+            <pre data-id="code-animation" class="fragment"><code class="python" data-trim data-line-numbers>
 for epoch in range(EPOCHS):
     loss = 0
     for i, data in enumerate(trainloader, 0):
@@ -208,10 +216,13 @@ for epoch in range(EPOCHS):
         </section>
 
         <section data-auto-animate>
-            <h2 data-id="code-title">You know what?</h2>
+            <h3 data-id="code-title">You know what?</h3>
+
             <p class="fragment" data-id="code-title">Nvidia gave us a GPU</p>
+
             <p class="fragment" data-id="code-title">Can we run this code using CUDA?</p>
-            <pre class="fragment" data-id="code-animation"><code class="python" data-trim
+
+            <pre data-id="code-animation" class="fragment"><code class="python" data-trim
                                                                  data-line-numbers="1, 2, 7, 8">
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -232,7 +243,8 @@ for epoch in range(EPOCHS):
         </section>
 
         <section>
-            <h2 data-id="code-title">And how to run that on multiple GPUs?</h2>
+            <h3 data-id="code-title">And how to run that on multiple GPUs?</h3>
+
             <blockquote class="fragment">Alexa! <br> Find PyTorch DataParallel tutorial
                 <br>*in English
             </blockquote>
@@ -245,8 +257,10 @@ for epoch in range(EPOCHS):
         </section>
 
         <section data-auto-animate>
-            <h2 data-id="code-title">You might have missed it</h2>
+            <h3 data-id="code-title">You might have missed it</h3>
+
             <p class="fragment">But it became a little bit messy</p>
+
             <p class="fragment">The solution - just use Lightning</p>
         </section>
 
@@ -262,21 +276,25 @@ for epoch in range(EPOCHS):
         <section data-background-iframe="https://www.williamfalcon.com/" data-background-interactive></section>
 
         <section data-auto-animate>
-            <h2 data-id="code-title">Thank you</h2>
+            <h3 data-id="code-title">Thank you</h3>
+
             <p class="fragment">Just kiddin</p>
+
             <p class="fragment">Lets dive into Lightning</p>
         </section>
 
         <section data-auto-animate>
-            <h2 data-id="code-title">The main principle</h2>
+            <h3 data-id="code-title">The main principle</h3>
+
             <p class="fragment">You do the cool staff</p>
+
             <p class="fragment">Lightning takes care of the boilerplate</p>
         </section>
 
         <section data-auto-animate>
-            <h2 data-id="code-title">Let's see that in action</h2>
+            <h3 data-id="code-title">Let's see that in action</h3>
 
-            <pre class="fragment" data-id="code-animation"><code class="python" data-trim
+            <pre data-id="code-animation" class="fragment"><code class="python" data-trim
                                                                  data-line-numbers="1, 2, 4, 7, 8">
 for epoch in range(EPOCHS):
     for i, data in enumerate(trainloader, 0):
@@ -296,7 +314,7 @@ for epoch in range(EPOCHS):
         <section data-auto-animate>
             <h4 data-id="code-title">Standard pl.LightningModule class</h4>
 
-            <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers>
+            <pre data-id="code-animation" class="fragment" ><code class="python" data-trim data-line-numbers>
 class CustomClassifier(pl.LightningModule):
 
     def __init__(self):
@@ -324,14 +342,15 @@ class CustomClassifier(pl.LightningModule):
 					</code></pre>
 
             <p class="fragment">Actually</p>
+
             <p class="fragment">That is all you need to train the model</p>
         </section>
 
 
         <section data-auto-animate>
-            <h4 data-id="code-title">How about data?</h4>
+            <h3 data-id="code-title">How about data?</h3>
 
-            <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers>
+            <pre data-id="code-animation" class="fragment"><code class="python" data-trim data-line-numbers>
 class CustomDatamodule(pl.LightningDataModule):
     def __init__(self, batch_size):
         super().__init__()
@@ -358,7 +377,7 @@ class CustomDatamodule(pl.LightningDataModule):
         <section data-auto-animate>
             <h2 data-id="code-title">Training loop</h2>
 
-            <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers>
+            <pre data-id="code-animation" class="fragment"><code class="python" data-trim data-line-numbers>
 model = CustomClassifier()
 dm = CustomDatamodule(batch_size=21)
 
@@ -369,7 +388,8 @@ trainer.fit(model, dm, epochs=37)
 
         <section data-auto-animate>
             <h3 data-id="code-title">Something more sophisticated?</h3>
-            <h4 class="fragment" data-id="code-title">How can I train on multiple GPUs?</h4>
+
+            <p class="fragment" data-id="code-title">How can I train on multiple GPUs?</p>
 
             <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers>
 # dp = DataParallel
@@ -384,7 +404,7 @@ trainer = Trainer(gpus=2, num_nodes=2, distributed_backend='ddp2')
         </section>
 
         <section data-auto-animate>
-                    <h2 data-id="code-title">Maybe TPU?</h2>
+                    <h3 data-id="code-title">Maybe TPU?</h3>
 
                     <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers>
         trainer = pl.Trainer(tpu_cores=8)
@@ -394,7 +414,7 @@ trainer = Trainer(gpus=2, num_nodes=2, distributed_backend='ddp2')
 
 
         <section data-auto-animate>
-                    <h2 data-id="code-title">Anything more?</h2>
+                    <h3 data-id="code-title">Anything more?</h3>
         </section>
 
         <section data-background-iframe="https://pytorch-lightning.readthedocs.io/en/stable/training_tricks.html"
@@ -419,13 +439,13 @@ trainer = Trainer(gpus=2, num_nodes=2, distributed_backend='ddp2')
                  data-background-interactive></section>
 
         <section>
-            <h2>And many others</h2>
+            <h3>And many others</h3>
             <p>Check out the official documentation at: <a href="https://pytorch-lightning.readthedocs.io/en/stable/">https://pytorch-lightning.readthedocs.io/en/stable/</a></p>
         </section>
 
 
         <section>
-            <h2>Thank you for your time</h2>
+            <h3>Thank you for your time</h3>
             <p>Feel free to ask any question</p>
             <p>
                 <small>Piotr Mazurek</small><br/>

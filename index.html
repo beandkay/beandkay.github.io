@@ -1,53 +1,439 @@
 <!doctype html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="author" content="Kemal Erdem">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="author" content="Kemal Erdem">
 
-  <title>WRM Temporal Network</title>
+    <title>WRM Temporal Network</title>
 
-  <link rel="stylesheet" href="dist/reset.css">
-  <link rel="stylesheet" href="dist/reveal.css">
-  <link rel="stylesheet" href="dist/theme/black.css" id="theme">
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/black.css" id="theme">
 
-  <!-- Theme used for syntax highlighting of code -->
-  <link rel="stylesheet" href="css/highlight/isbl-editor-light.css">
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="css/highlight/isbl-editor-light.css">
 </head>
 <body>
 <div class="reveal">
-  <div class="slides">
-    <section>
-      <h2>Presentation</h2>
-      <small>Authors...</small>
-    </section>
-    <section>
-      <h2>Slide 1</h2>
-      <p>
-        ABC
-        $$
-        a_b
-        $$
-      </p>
-      <pre><code data-trim data-noescape>
-(def lazy-fib
-  (concat
-   [0 1]
-   ((fn rfib [a b]
-        (lazy-cons (+ a b) (rfib b (+ a b)))) 0 1)))
-  </code></pre>
-    </section>
-    <section>
-      <h2>Thanks</h2>
-      <blockquote>"There's no such thing as a stupid question!"</blockquote>
-      <p>
-        <small>Authors</small><br/>
-        <small><a href="">Links</a></small><br/>
-      </p>
-    </section>
-  </div>
-</div>
+    <div class="slides">
+        <section>
+            <h2>PyTorch Lightning </h2>
+            <p>The last deep learning framework you will ever need</p>
+            <small>Piotr Mazurek</small>
+        </section>
 
+        <section data-auto-animate>
+            <h2 data-id="code-title">Initial assumptions</h2>
+            <p class="fragment">You know how "standard" DL training loop looks like</p>
+            <p class="fragment">You (more-less) know how PyTorch works</p>
+
+        </section>
+
+        <section data-auto-animate>
+            <h2 data-id="code-title">Quick recap</h2>
+            <h4>Torch model</h4>
+            <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers>
+class Net(nn.Module):
+    def __init__(self):
+        super(Net, self).__init__()
+        self.conv1 = nn.Conv2d(3, 6, 5)
+        self.pool = nn.MaxPool2d(2, 2)
+        self.conv2 = nn.Conv2d(6, 16, 5)
+        self.fc1 = nn.Linear(16 * 5 * 5, 120)
+        self.fc2 = nn.Linear(120, 10)
+    def forward(self, x):
+        x = self.pool(F.relu(self.conv1(x)))
+        x = self.pool(F.relu(self.conv2(x)))
+        x = x.view(-1, 16 * 5 * 5)
+        x = F.relu(self.fc1(x))
+        return self.fc2(x)
+					</code></pre>
+        </section>
+
+        <section data-auto-animate>
+            <h2 data-id="code-title">Quick recap</h2>
+            <h4>Torch training loop</h4>
+            <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers>
+for epoch in range(EPOCHS):
+    for i, data in enumerate(trainloader, 0):
+        inputs, labels = data
+
+        optimizer.zero_grad()
+
+        # forward + backward + optimize
+        outputs = net(inputs)
+        loss = criterion(outputs, labels)
+        loss.backward()
+        optimizer.step()
+
+        # print statistics
+        ...
+					</code></pre>
+        </section>
+
+        <section data-auto-animate>
+            <h2 data-id="code-title">Fine but</h2>
+            <p class="fragment">I heard that the lr scheduler is a cool feature</p>
+            <p class="fragment">Can we add that?</p>
+            <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers="11">
+scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
+for epoch in range(EPOCHS):
+    for i, data in enumerate(trainloader, 0):
+        inputs, labels = data
+        optimizer.zero_grad()
+
+        outputs = net(inputs)
+        loss = criterion(outputs, labels)
+        loss.backward()
+        optimizer.step()
+        scheduler.step()
+					</code></pre>
+        </section>
+
+
+        <section data-auto-animate>
+            <h4 data-id="code-title">And how about gradient clipping?</h4>
+            <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers="10">
+scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
+for epoch in range(EPOCHS):
+    for i, data in enumerate(trainloader, 0):
+        inputs, labels = data
+        optimizer.zero_grad()
+
+        outputs = net(inputs)
+        loss = criterion(outputs, labels)
+        loss.backward()
+        torch.nn.utils.clip_grad_norm_(model.parameters(), args.clip)
+        optimizer.step()
+        scheduler.step()
+					</code></pre>
+        </section>
+
+        <section data-auto-animate>
+            <p data-id="code-title">Can also add the gradient accumulation mechanism?</p>
+            <pre class="fragment" data-id="code-animation"><code class="python" data-trim
+                                                                 data-line-numbers="3, 9, 10, 11">
+scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
+for epoch in range(EPOCHS):
+    loss = 0
+    for i, data in enumerate(trainloader, 0):
+        inputs, labels = data
+        optimizer.zero_grad()
+
+        outputs = net(inputs)
+        loss += criterion(outputs, labels)  # Compute loss function
+        if (i+1) % accumulation_steps == 0:
+            loss = loss / accumulation_steps
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), args.clip)
+            optimizer.step()
+            scheduler.step()
+					</code></pre>
+        </section>
+
+        <section data-auto-animate>
+            <h2 data-id="code-title">And maybe EarlyStopping?</h2>
+            <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers>
+from suspicious_not_tested_github_repo import EarlyStopping
+
+es = EarlyStopping(no_documentation_whatsoever=True)
+            </code></pre>
+        </section>
+
+        <section data-auto-animate>
+            <h4 data-id="code-title">One more thing, I need Tensorboard logging</h4>
+            <pre data-id="code-animation"><code class="python" data-trim data-line-numbers>
+scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
+writer = SummaryWriter()
+
+for epoch in range(EPOCHS):
+    loss = 0
+    for i, data in enumerate(trainloader, 0):
+        inputs, labels = data
+        optimizer.zero_grad()
+
+        outputs = net(inputs)
+        loss += criterion(outputs, labels)  # Compute loss function
+
+        if phase = "training":
+            if (i+1) % accumulation_steps == 0:
+                loss = loss / accumulation_steps
+                loss.backward()
+                torch.nn.utils.clip_grad_norm_(model.parameters(), args.clip)
+                optimizer.step()
+                scheduler.step()
+
+        if phase = "training":
+                writer.add_scalar('Loss/train', loss)
+        elif phase = "test":
+            writer.add_scalar('Loss/test', loss)
+					</code></pre>
+        </section>
+
+        <section data-auto-animate>
+            <h4 data-id="code-title">Actually, I would rather use W&B then Tensorboard, can we change that?</h4>
+            <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers>
+for epoch in range(EPOCHS):
+    ...
+
+    if phase = "training":
+        wandb.log({'epoch': epoch, 'train_loss': loss})
+    elif phase = "test":
+        wandb.log({'epoch': epoch, 'test_loss': loss})
+					</code></pre>
+        </section>
+
+        <section data-auto-animate>
+            <h2 data-id="code-title">Wait, why the code stopped working?</h2>
+            <p class="fragment" data-id="code-title">Oh, we've commented line 5</p>
+            <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers="5">
+for epoch in range(EPOCHS):
+    loss = 0
+    for i, data in enumerate(trainloader, 0):
+        inputs, labels = data
+        #optimizer.zero_grad()
+
+        outputs = net(inputs)
+        loss += criterion(outputs, labels)  # Compute loss function
+
+        if phase = "training":
+            if (i+1) % accumulation_steps == 0:
+                loss = loss / accumulation_steps
+                loss.backward()
+                torch.nn.utils.clip_grad_norm_(model.parameters(), args.clip)
+                optimizer.step()
+                scheduler.step()
+					</code></pre>
+        </section>
+
+        <section data-auto-animate>
+            <h2 data-id="code-title">You know what?</h2>
+            <p class="fragment" data-id="code-title">Nvidia gave us a GPU</p>
+            <p class="fragment" data-id="code-title">Can we run this code using CUDA?</p>
+            <pre class="fragment" data-id="code-animation"><code class="python" data-trim
+                                                                 data-line-numbers="1, 2, 7, 8">
+
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+model = model.to(device)
+
+for epoch in range(EPOCHS):
+    for i, data in enumerate(trainloader, 0):
+        inputs, labels = data
+        inputs = inputs.to(device)
+        labels = labels.to(device)
+
+        optimizer.zero_grad()
+
+        outputs = net(inputs)
+        loss += criterion(outputs, labels)  # Compute loss function
+        ...
+					</code></pre>
+        </section>
+
+        <section>
+            <h2 data-id="code-title">And how to run that on multiple GPUs?</h2>
+            <blockquote class="fragment">Alexa! <br> Find PyTorch DataParallel tutorial
+                <br>*in English
+            </blockquote>
+
+        </section>
+
+        <section data-background="http://i.giphy.com/90F8aUepslB84.gif">
+            <h2 data-id="code-title">And now add TPU support</h2>
+
+        </section>
+
+        <section data-auto-animate>
+            <h2 data-id="code-title">You might have missed it</h2>
+            <p class="fragment">But it became a little bit messy</p>
+            <p class="fragment">The solution - just use Lightning</p>
+        </section>
+
+        <section data-background-iframe="https://github.com/PyTorchLightning/pytorch-lightning/"
+                 data-background-interactive></section>
+
+        <section data-background-iframe="https://github.com/pytorch/pytorch"
+                 data-background-interactive></section>
+
+        <section data-background-iframe="https://pytorch-lightning.readthedocs.io/en/latest/"
+                 data-background-interactive></section>
+
+        <section data-background-iframe="https://www.williamfalcon.com/" data-background-interactive></section>
+
+        <section data-auto-animate>
+            <h2 data-id="code-title">Thank you</h2>
+            <p class="fragment">Just kiddin</p>
+            <p class="fragment">Lets dive into Lightning</p>
+        </section>
+
+        <section data-auto-animate>
+            <h2 data-id="code-title">The main principle</h2>
+            <p class="fragment">You do the cool staff</p>
+            <p class="fragment">Lightning takes care of the boilerplate</p>
+        </section>
+
+        <section data-auto-animate>
+            <h2 data-id="code-title">Let's see that in action</h2>
+
+            <pre class="fragment" data-id="code-animation"><code class="python" data-trim
+                                                                 data-line-numbers="1, 2, 4, 7, 8">
+for epoch in range(EPOCHS):
+    for i, data in enumerate(trainloader, 0):
+        inputs, labels = data
+        optimizer.zero_grad()
+        outputs = net(inputs)
+        loss = criterion(outputs, labels)
+        loss.backward()
+        optimizer.step()
+        ...
+					</code></pre>
+
+            <p class="fragment">Lightning takes care about all this boilerplate</p>
+        </section>
+
+
+        <section data-auto-animate>
+            <h4 data-id="code-title">Standard pl.LightningModule class</h4>
+
+            <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers>
+class CustomClassifier(pl.LightningModule):
+
+    def __init__(self):
+        super().__init__()
+        self.criterion = nn.CrossEntropyLoss()
+        self.fc1 = nn.Linear(784, 10)
+
+    def forward(self, x):
+        return self.fc1(x)
+
+    def training_step(self, batch, batch_idx):
+        x, y = batch
+        logits = self.forward(x)
+
+        loss = self.criterion(logits, y)
+        tensorboard_logs = {'train_loss': loss}
+
+        return {'loss': loss, 'log': tensorboard_logs}
+
+    def configure_optimizers(self):
+        optimizer = torch.optim.Adam(self.parameters(), lr=1e-3)
+        scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
+
+        return [optimizer], [scheduler]
+					</code></pre>
+
+            <p class="fragment">Actually</p>
+            <p class="fragment">That is all you need to train the model</p>
+        </section>
+
+
+        <section data-auto-animate>
+            <h4 data-id="code-title">How about data?</h4>
+
+            <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers>
+class CustomDatamodule(pl.LightningDataModule):
+    def __init__(self, batch_size):
+        super().__init__()
+        self.batch_size = batch_size
+
+    def setup(self, stage=None):
+        self.train_set = StandardTorchDataset(train=True)
+
+        self.val_set = StandardTorchDataset(train=False)
+
+    def train_dataloader(self):
+        return DataLoader(self.train_set,
+                batch_size=self.batch_size,
+                shuffle=True, num_workers=4)
+
+    def val_dataloader(self):
+        return DataLoader(self.val_set,
+                batch_size=self.batch_size,
+                shuffle=False, num_workers=4)
+					</code></pre>
+
+        </section>
+
+        <section data-auto-animate>
+            <h2 data-id="code-title">Training loop</h2>
+
+            <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers>
+model = CustomClassifier()
+dm = CustomDatamodule(batch_size=21)
+
+trainer = pl.Trainer()
+trainer.fit(model, dm, epochs=37)
+					</code></pre>
+        </section>
+
+        <section data-auto-animate>
+            <h3 data-id="code-title">Something more sophisticated?</h3>
+            <h4 class="fragment" data-id="code-title">How can I train on multiple GPUs?</h4>
+
+            <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers>
+# dp = DataParallel
+trainer = Trainer(gpus=2, distributed_backend='dp')
+
+# ddp = DistributedDataParallel
+trainer = Trainer(gpus=2, num_nodes=2, distributed_backend='ddp')
+
+# ddp2 = DistributedDataParallel + dp
+trainer = Trainer(gpus=2, num_nodes=2, distributed_backend='ddp2')
+                            </code></pre>
+        </section>
+
+        <section data-auto-animate>
+                    <h2 data-id="code-title">Maybe TPU?</h2>
+
+                    <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers>
+        trainer = pl.Trainer(tpu_cores=8)
+        trainer.fit(model, dm)
+                                    </code></pre>
+        </section>
+
+
+        <section data-auto-animate>
+                    <h2 data-id="code-title">Anything more?</h2>
+        </section>
+
+        <section data-background-iframe="https://pytorch-lightning.readthedocs.io/en/stable/training_tricks.html"
+                 data-background-interactive></section>
+
+        <section data-background-iframe="https://pytorch-lightning.readthedocs.io/en/stable/callbacks.html#built-in-callbacks"
+                 data-background-interactive></section>
+
+        <section data-background-iframe="https://pytorch-lightning.readthedocs.io/en/stable/debugging.html#fast-dev-run"
+                 data-background-interactive></section>
+
+        <section data-background-iframe="https://pytorch-lightning.readthedocs.io/en/stable/logging.html#tensorboard"
+                 data-background-interactive></section>
+
+        <section data-background-iframe="https://pytorch-lightning.readthedocs.io/en/stable/weights_loading.html#automatic-saving/"
+                 data-background-interactive></section>
+
+        <section data-background-iframe="https://pytorch-lightning.readthedocs.io/en/stable/weights_loading.html#checkpoint-loading/"
+                 data-background-interactive></section>
+
+        <section data-background-iframe="https://pytorch-lightning.readthedocs.io/en/stable/amp.html/"
+                 data-background-interactive></section>
+
+        <section>
+            <h2>And many others</h2>
+            <p>Check out the official documentation at: <a href="https://pytorch-lightning.readthedocs.io/en/stable/">https://pytorch-lightning.readthedocs.io/en/stable/</a></p>
+        </section>
+
+
+        <section>
+            <h2>Thank you for your time</h2>
+            <p>Feel free to ask any question</p>
+            <p>
+                <small>Piotr Mazurek</small><br/>
+                Presentation available at: <small><a href="">...</a></small><br/>
+            </p>
+        </section>
+    </div>
+</div>
 
 
 <script src="dist/reveal.js"></script>
@@ -56,37 +442,41 @@
 <script src="plugin/highlight/highlight.js"></script>
 <script src="plugin/math/math.js"></script>
 <script>
-  // More info about config & dependencies:
-  // - https://github.com/hakimel/reveal.js#configuration
-  // - https://github.com/hakimel/reveal.js#dependencies
-  Reveal.initialize({
-    hash: true,
-    controls: true,
-    progress: true,
-    slideNumber: false,
-    overview: true,
-    center: true,
-    navigationMode: 'default',
-    fragmentInURL: false,
-    embedded: false,
-    preloadIframes: null,
-    autoSlide: 0,
-    autoSlideStoppable: true,
-    defaultTiming: 120,
-    mouseWheel: false,
-    previewLinks: false,
-    transition: 'slide', // none/fade/slide/convex/concave/zoom
-    transitionSpeed: 'default', // default/fast/slow
-    backgroundTransition: 'fade', // none/fade/slide/convex/concave/zoom
-    display: 'block',
-    math: {
-      mathjax: 'plugin/math/MathJax.js',
-      config: 'TeX-AMS_HTML-full', // See http://docs.mathjax.org/en/latest/config-files.html
-      // pass other options into `MathJax.Hub.Config()`
-      TeX: { Macros: { RR: "{\\bf R}" } }
-    },
-    plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath ]
-  });
+    // More info about config & dependencies:
+    // - https://github.com/hakimel/reveal.js#configuration
+    // - https://github.com/hakimel/reveal.js#dependencies
+    Reveal.initialize({
+        hash: true,
+        controls: true,
+        progress: true,
+        slideNumber: true,
+        overview: true,
+        center: true,
+        navigationMode: 'default',
+        fragmentInURL: false,
+        embedded: false,
+        preloadIframes: null,
+        autoSlide: 0,
+        autoSlideStoppable: true,
+        defaultTiming: 120,
+        mouseWheel: false,
+        previewLinks: false,
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+        transitionSpeed: 'fast', // default/fast/slow
+        backgroundTransition: 'fade', // none/fade/slide/convex/concave/zoom
+        display: 'block',
+        math: {
+            mathjax: 'plugin/math/MathJax.js',
+            config: 'TeX-AMS_HTML-full', // See http://docs.mathjax.org/en/latest/config-files.html
+            // pass other options into `MathJax.Hub.Config()`
+            TeX: {Macros: {RR: "{\\bf R}"}}
+        },
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMath]
+    });
 </script>
 </body>
 </html>
+
+
+
+

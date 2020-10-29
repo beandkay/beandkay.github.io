@@ -98,7 +98,7 @@ for epoch in range(EPOCHS):
         <section data-auto-animate>
             <h3 data-id="code-title">And how about gradient clipping?</h3>
 
-            <pre data-id="code-animation" class="fragment"><code class="python" data-trim data-line-numbers="10">
+            <pre data-id="code-animation" class="fragment" ><code  class="python" data-trim data-line-numbers="10">
 scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
 for epoch in range(EPOCHS):
     for i, data in enumerate(trainloader, 0):
@@ -117,7 +117,7 @@ for epoch in range(EPOCHS):
         <section data-auto-animate>
             <h3 data-id="code-title">Can also add the gradient accumulation mechanism?</h3>
 
-            <pre data-id="code-animation" class="fragment"><code class="python" data-trim
+            <pre data-id="code-animation" class="fragment" ><code class="python" data-trim
                                                                  data-line-numbers="3, 9, 10, 11">
 scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
 for epoch in range(EPOCHS):
@@ -139,7 +139,7 @@ for epoch in range(EPOCHS):
 
         <section data-auto-animate>
             <h3 data-id="code-title">And maybe EarlyStopping?</h3>
-            <pre data-id="code-animation" class="fragment"><code class="python" data-trim data-line-numbers>
+            <pre data-id="code-animation" class="fragment" ><code class="python" data-trim data-line-numbers>
 from suspicious_not_tested_github_repo import EarlyStopping
 
 es = EarlyStopping(no_documentation_whatsoever=True)
@@ -149,7 +149,7 @@ es = EarlyStopping(no_documentation_whatsoever=True)
         <section data-auto-animate>
             <h3 data-id="code-title">One more thing, I need Tensorboard logging</h3>
 
-            <pre data-id="code-animation" class="fragment"><code class="python" data-trim data-line-numbers>
+            <pre data-id="code-animation" class="fragment" ><code class="python" data-trim data-line-numbers>
 scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
 writer = SummaryWriter()
 
@@ -195,7 +195,7 @@ for epoch in range(EPOCHS):
 
             <p class="fragment" data-id="code-title">Oh, we've commented line 5</p>
 
-            <pre data-id="code-animation" class="fragment"><code class="python" data-trim data-line-numbers>
+            <pre data-id="code-animation"><code class="python" data-trim data-line-numbers>
 for epoch in range(EPOCHS):
     loss = 0
     for i, data in enumerate(trainloader, 0):
@@ -218,11 +218,11 @@ for epoch in range(EPOCHS):
         <section data-auto-animate>
             <h3 data-id="code-title">You know what?</h3>
 
-            <p class="fragment" data-id="code-title">Nvidia gave us a GPU</p>
+            <p data-id="code-title">Nvidia gave us a GPU</p>
 
-            <p class="fragment" data-id="code-title">Can we run this code using CUDA?</p>
+            <p data-id="code-title">Can we run this code using CUDA?</p>
 
-            <pre data-id="code-animation" class="fragment"><code class="python" data-trim
+            <pre data-id="code-animation" class="fragment" ><code class="python" data-trim
                                                                  data-line-numbers="1, 2, 7, 8">
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -245,7 +245,7 @@ for epoch in range(EPOCHS):
         <section>
             <h3 data-id="code-title">And how to run that on multiple GPUs?</h3>
 
-            <blockquote class="fragment">Alexa! <br> Find PyTorch DataParallel tutorial
+            <blockquote class="fragment" >Alexa! <br> Find PyTorch DataParallel tutorial
                 <br>*in English
             </blockquote>
 
@@ -264,11 +264,15 @@ for epoch in range(EPOCHS):
             <p class="fragment">The solution - just use Lightning</p>
         </section>
 
-        <section data-background-iframe="https://github.com/PyTorchLightning/pytorch-lightning/"
-                 data-background-interactive></section>
+<!--        <section data-background-iframe="https://github.com/PyTorchLightning/pytorch-lightning/"-->
+<!--                 data-background-interactive></section>-->
 
-        <section data-background-iframe="https://github.com/pytorch/pytorch"
-                 data-background-interactive></section>
+        <section data-background="assets/Screenshot_2020-10-29 PyTorchLightning pytorch-lightning.png"></section>
+
+        <section data-background="assets/Screenshot_2020-10-29 pytorch pytorch.png"></section>
+
+<!--        <section data-background-iframe="https://github.com/pytorch/pytorch"-->
+<!--                 data-background-interactive></section>-->
 
         <section data-background-iframe="https://pytorch-lightning.readthedocs.io/en/latest/"
                  data-background-interactive></section>
@@ -286,9 +290,9 @@ for epoch in range(EPOCHS):
         <section data-auto-animate>
             <h3 data-id="code-title">The main principle</h3>
 
-            <p class="fragment">You do the cool staff</p>
+            <p class="fragment" >You do the cool staff</p>
 
-            <p class="fragment">Lightning takes care of the boilerplate</p>
+            <p class="fragment" >Lightning takes care of the boilerplate</p>
         </section>
 
         <section data-auto-animate>
@@ -452,7 +456,6 @@ trainer = Trainer(gpus=2, num_nodes=2, distributed_backend='ddp2')
                 Presentation available at: <small><a href="https://tugot17.github.io/Pytorch-Lightning-Presentation">tugot17.github.io/Pytorch-Lightning-Presentation</a></small><br/>
             </p>
         </section>
-    </div>
 </div>
 
 

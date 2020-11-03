@@ -393,7 +393,7 @@ trainer.fit(model, dm, epochs=37)
         <section data-auto-animate>
             <h3 data-id="code-title">Something more sophisticated?</h3>
 
-            <p class="fragment" data-id="code-title">How can I train on multiple GPUs?</p>
+            <p data-id="code-title">How can I train on multiple GPUs?</p>
 
             <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers>
 # dp = DataParallel
@@ -436,15 +436,22 @@ trainer = Trainer(gpus=2, num_nodes=2, distributed_backend='ddp2')
         <section data-background-iframe="https://pytorch-lightning.readthedocs.io/en/stable/weights_loading.html#automatic-saving/"
                  data-background-interactive></section>
 
-        <section data-background-iframe="https://pytorch-lightning.readthedocs.io/en/stable/weights_loading.html#checkpoint-loading/"
-                 data-background-interactive></section>
 
-        <section data-background-iframe="https://pytorch-lightning.readthedocs.io/en/stable/amp.html/"
+        <section data-background-iframe="https://pytorch-lightning.readthedocs.io/en/latest/amp.html#gpu-16-bit"
                  data-background-interactive></section>
 
         <section>
             <h3>And many others</h3>
             <p>Check out the official documentation at: <a href="https://pytorch-lightning.readthedocs.io/en/stable/">https://pytorch-lightning.readthedocs.io/en/stable/</a></p>
+        </section>
+
+        <section>
+            <h3>Summary</h3>
+
+            <p class="fragment">Universal template for designing the training loops</p>
+            <p class="fragment">Advanced DL tricks out of the box</p>
+            <p class="fragment">You care about cool staff, lightning handles everything else</p>
+
         </section>
 
 
@@ -453,7 +460,7 @@ trainer = Trainer(gpus=2, num_nodes=2, distributed_backend='ddp2')
             <p>Feel free to ask any question</p>
             <p>
                 <small>Piotr Mazurek</small><br/>
-                Presentation available at: <small><a href="https://tugot17.github.io/Pytorch-Lightning-Presentation">tugot17.github.io/Pytorch-Lightning-Presentation</a></small><br/>
+                <small>Presentation available at:<br> <a href="https://tugot17.github.io/Pytorch-Lightning-Presentation">tugot17.github.io/Pytorch-Lightning-Presentation</a></small><br/>
             </p>
         </section>
 </div>

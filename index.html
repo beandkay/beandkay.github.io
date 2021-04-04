@@ -117,14 +117,14 @@ for epoch in range(EPOCHS):
             <h3 data-id="code-title2">Popular computer vision layers</h3>
             <p class="fragment">Pooling layers</p>
             <ul class="fragment">
-                <li>nn.MaxPool1d and nn.AdaptiveMaxPool1d</li>
-                <li>nn.MaxPool2d and nn.AdaptiveMaxPool2d</li>
-                <li>nn.MaxPool3d and nn.AdaptiveMaxPool3d</li>
+                <li>nn.MaxPool1d</li>
+                <li>nn.MaxPool2d</li>
+                <li>nn.MaxPool3d</li>
             </ul>
             <ul class="fragment">
-                <li>nn.AvgPool1d and nn.AdaptiveAvgPool1d</li>
-                <li>nn.AvgPool2d and nn.AdaptiveAvgPool2d</li>
-                <li>nn.AvgPool3d and nn.AdaptiveAvgPool3d</li>
+                <li>nn.AvgPool1d</li>
+                <li>nn.AvgPool2d</li>
+                <li>nn.AvgPool3d</li>
             </ul>
         </section>
 
@@ -363,7 +363,7 @@ model = nn.DataParallel(model, device_ids=[0,1,2,3]) # This
       // - https://github.com/hakimel/reveal.js#configuration
       // - https://github.com/hakimel/reveal.js#dependencies
       Reveal.initialize({
-        width: '100%',
+        width: '75%',
         height: '100%',
         hash: true,
         controls: true,

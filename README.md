@@ -1,11 +1,7 @@
-# Pytorch-Lightning-Presentation
-[https://tugot17.github.io/Pytorch-Lightning-Presentation/#/](https://tugot17.github.io/Pytorch-Lightning-Presentation/#/)
-
-Presentation on Pytorch Lightning presented on medical.ml (student research group) at a meeting at the Wrocław University of Technology on 11.XI.2020
+# Pytorch-Basic-Tutorial-Part-2-Presentation
+[https://beandkay.github.io/#/](https://beandkay.github.io/#/)
 
 
-## Autors
-[Piotr Mazurek](https://github.com/tugot17/) 
 
 ## Licence
 Feel free to use it for whatever purpose, but please mention from where you took it from

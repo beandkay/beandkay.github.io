@@ -5,35 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="author" content="Kemal Erdem">
 
-    <title>PyTorch Lightning</title>
+    <title>PyTorch Basic Tutorial Part 2</title>
 
     <link rel="stylesheet" href="dist/reset.css">
     <link rel="stylesheet" href="dist/reveal.css">
     <link rel="stylesheet" href="dist/theme/black.css" id="theme">
 
     <!-- Theme used for syntax highlighting of code -->
-    <link rel="stylesheet" href="css/highlight/isbl-editor-light.css">
+    <!--    <link rel="stylesheet" href="css/highlight/isbl-editor-light.css">-->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
 </head>
 <body>
 <div class="reveal">
     <div class="slides">
-        <section>
-            <h2>PyTorch Lightning </h2>
-            <p>The last deep learning framework you will ever need</p>
-            <small>Piotr Mazurek</small>
+        <section data-background-transition="zoom">
+            <h2>PyTorch</h2>
+            <p>This is a basic tutorial about Pytorch application to computer vision</p>
+            <small>Binh Nguyen</small>
         </section>
 
-        <section data-auto-animate>
+        <section data-background-transition="zoom" data-auto-animate>
             <h3 data-id="code-title">Initial assumptions</h3>
             <p class="fragment">You know how "standard" DL training loop looks like</p>
             <p class="fragment">You (more-less) know how PyTorch works</p>
 
         </section>
 
-        <section data-auto-animate>
+        <section data-background-transition="zoom" data-auto-animate>
+            <h3 data-id="code-title">Core libraries</h3>
+            <ul>
+                <li class="fragment">torch (Core library)</li>
+                <li class="fragment">torch.optim (Core optimizers library)</li>
+                <li class="fragment">torch.nn (Core neural networks library)</li>
+                <li class="fragment">torch.nn.functional (Core neural networks functions library)</li>
+                <li class="fragment">torch.utils (Utilities library)</li>
+                <li class="fragment">torchvision (Core vision library)</li>
+            </ul>
+        </section>
+
+        <section data-background-transition="zoom" data-auto-animate>
             <h3 data-id="code-title">Quick recap</h3>
             <p>Torch model</p>
-            <pre data-id="code-animation"><code class="python" data-trim data-line-numbers>
+            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|4-8|9-14">
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
@@ -51,10 +64,29 @@ class Net(nn.Module):
 					</code></pre>
         </section>
 
-        <section data-auto-animate>
+        <section data-background-transition="zoom" data-auto-animate>
+            <h3 data-id="code-title">Quick recap</h3>
+            <p>Loss and activation functions</p>
+            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|1-2|4|6-9|11|12">
+optimizer = optim.SGD(model.parameters(),
+    lr=0.01, momentum=0.9)
+
+optimizer = optim.Adam([var1, var2], lr=0.0001)
+
+optimizer = optim.SGD([
+    {'params': model.base.parameters()},
+    {'params': model.classifier.parameters(), 'lr': 1e-3}
+    ], lr=1e-2, momentum=0.9)
+
+criterion = nn.CrossEntropyLoss()
+criterion = nn.BCELoss
+					</code></pre>
+        </section>
+
+        <section data-background-transition="zoom" data-auto-animate>
             <h3 data-id="code-title">Quick recap</h3>
             <p>Torch training loop</p>
-            <pre data-id="code-animation"><code class="python" data-trim data-line-numbers>
+            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|5|8|9|10|11">
 for epoch in range(EPOCHS):
     for i, data in enumerate(trainloader, 0):
         inputs, labels = data
@@ -72,85 +104,11 @@ for epoch in range(EPOCHS):
 					</code></pre>
         </section>
 
-        <section data-auto-animate>
-            <h3 data-id="code-title">Fine but</h3>
-
-            <p class="fragment">I heard that the lr scheduler is a cool feature</p>
-
-            <p class="fragment">Can we add that?</p>
-
-            <pre data-id="code-animation" class="fragment"><code class="python" data-trim data-line-numbers="1, 11">
-scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
-for epoch in range(EPOCHS):
-    for i, data in enumerate(trainloader, 0):
-        inputs, labels = data
-        optimizer.zero_grad()
-
-        outputs = net(inputs)
-        loss = criterion(outputs, labels)
-        loss.backward()
-        optimizer.step()
-        scheduler.step()
-					</code></pre>
-        </section>
-
-
-        <section data-auto-animate>
-            <h3 data-id="code-title">And how about gradient clipping?</h3>
-
-            <pre data-id="code-animation" class="fragment" ><code  class="python" data-trim data-line-numbers="10">
-scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
-for epoch in range(EPOCHS):
-    for i, data in enumerate(trainloader, 0):
-        inputs, labels = data
-        optimizer.zero_grad()
-
-        outputs = net(inputs)
-        loss = criterion(outputs, labels)
-        loss.backward()
-        torch.nn.utils.clip_grad_norm_(model.parameters(), args.clip)
-        optimizer.step()
-        scheduler.step()
-					</code></pre>
-        </section>
-
-        <section data-auto-animate>
-            <h3 data-id="code-title">Can also add the gradient accumulation mechanism?</h3>
-
-            <pre data-id="code-animation" class="fragment" ><code class="python" data-trim
-                                                                 data-line-numbers="3, 9, 10, 11">
-scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
-for epoch in range(EPOCHS):
-    loss = 0
-    for i, data in enumerate(trainloader, 0):
-        inputs, labels = data
-        optimizer.zero_grad()
-
-        outputs = net(inputs)
-        loss += criterion(outputs, labels)  # Compute loss function
-        if (i+1) % accumulation_steps == 0:
-            loss = loss / accumulation_steps
-            loss.backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(), args.clip)
-            optimizer.step()
-            scheduler.step()
-					</code></pre>
-        </section>
-
-        <section data-auto-animate>
-            <h3 data-id="code-title">And maybe EarlyStopping?</h3>
-            <pre data-id="code-animation" class="fragment" ><code class="python" data-trim data-line-numbers>
-from suspicious_not_tested_github_repo import EarlyStopping
-
-es = EarlyStopping(no_documentation_whatsoever=True)
-            </code></pre>
-        </section>
-
-        <section data-auto-animate>
+        <section data-background-transition="zoom" data-auto-animate>
             <h3 data-id="code-title">One more thing, I need Tensorboard logging</h3>
 
-            <pre data-id="code-animation" class="fragment" ><code class="python" data-trim data-line-numbers>
-scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
+            <pre data-id="code-animation" class="fragment"><code class="hljs" data-trim data-line-numbers="|1-2|5|12|16-19">
+from torch.utils.tensorboard import SummaryWriter
 writer = SummaryWriter()
 
 for epoch in range(EPOCHS):
@@ -160,26 +118,22 @@ for epoch in range(EPOCHS):
         optimizer.zero_grad()
 
         outputs = net(inputs)
-        loss += criterion(outputs, labels)  # Compute loss function
+        # Compute loss function
+        loss += criterion(outputs, labels)
+        loss.backward()
+        optimizer.step()
 
         if phase = "training":
-            if (i+1) % accumulation_steps == 0:
-                loss = loss / accumulation_steps
-                loss.backward()
-                torch.nn.utils.clip_grad_norm_(model.parameters(), args.clip)
-                optimizer.step()
-                scheduler.step()
-
-        if phase = "training":
-                writer.add_scalar('Loss/train', loss)
+            writer.add_scalar('Loss/train', loss)
         elif phase = "test":
             writer.add_scalar('Loss/test', loss)
 					</code></pre>
         </section>
 
-        <section data-auto-animate>
+        <section data-background-transition="zoom" data-auto-animate>
             <h4 data-id="code-title">Actually, I would rather use W&B then Tensorboard, can we change that?</h4>
-            <pre data-id="code-animation" class="fragment"><code class="python" data-trim data-line-numbers>
+            <pre data-id="code-animation" class="fragment"><code class="hljs" data-trim data-line-numbers="|1|5-8">
+import wandb
 for epoch in range(EPOCHS):
     ...
 
@@ -190,39 +144,14 @@ for epoch in range(EPOCHS):
 					</code></pre>
         </section>
 
-        <section data-auto-animate>
-            <h3 data-id="code-title">Wait, why the code stopped working?</h3>
-
-            <p class="fragment" data-id="code-title">Oh, we've commented line 5</p>
-
-            <pre data-id="code-animation"><code class="python" data-trim data-line-numbers>
-for epoch in range(EPOCHS):
-    loss = 0
-    for i, data in enumerate(trainloader, 0):
-        inputs, labels = data
-        #optimizer.zero_grad()
-
-        outputs = net(inputs)
-        loss += criterion(outputs, labels)  # Compute loss function
-
-        if phase = "training":
-            if (i+1) % accumulation_steps == 0:
-                loss = loss / accumulation_steps
-                loss.backward()
-                torch.nn.utils.clip_grad_norm_(model.parameters(), args.clip)
-                optimizer.step()
-                scheduler.step()
-					</code></pre>
-        </section>
-
-        <section data-auto-animate>
+        <section data-background-transition="zoom" data-auto-animate>
             <h3 data-id="code-title">You know what?</h3>
 
             <p data-id="code-title">Nvidia gave us a GPU</p>
 
             <p data-id="code-title">Can we run this code using CUDA?</p>
 
-            <pre data-id="code-animation" class="fragment" ><code class="python" data-trim
+            <pre data-id="code-animation" class="fragment"><code class="hljs" data-trim
                                                                  data-line-numbers="1, 2, 7, 8">
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -242,240 +171,37 @@ for epoch in range(EPOCHS):
 					</code></pre>
         </section>
 
-        <section>
+        <section data-background-transition="zoom">
             <h3 data-id="code-title">And how to run that on multiple GPUs?</h3>
-
-            <blockquote class="fragment" >Alexa! <br> Find PyTorch DataParallel tutorial
-                <br>*in English
-            </blockquote>
-
-        </section>
-
-        <section data-background="http://i.giphy.com/90F8aUepslB84.gif">
-            <h2 data-id="code-title">And now add TPU support</h2>
-
-        </section>
-
-        <section data-auto-animate>
-            <h3 data-id="code-title">You might have missed it</h3>
-
-            <p class="fragment">But it became a little bit messy</p>
-
-            <p class="fragment">The solution - just use Lightning</p>
-        </section>
-
-<!--        <section data-background-iframe="https://github.com/PyTorchLightning/pytorch-lightning/"-->
-<!--                 data-background-interactive></section>-->
-
-        <section data-background="assets/Screenshot_2020-10-29 PyTorchLightning pytorch-lightning.png"></section>
-
-        <section data-background="assets/Screenshot_2020-10-29 pytorch pytorch.png"></section>
-
-<!--        <section data-background-iframe="https://github.com/pytorch/pytorch"-->
-<!--                 data-background-interactive></section>-->
-
-        <section data-background-iframe="https://pytorch-lightning.readthedocs.io/en/latest/"
-                 data-background-interactive></section>
-
-        <section data-background-iframe="https://www.williamfalcon.com/" data-background-interactive></section>
-
-        <section data-auto-animate>
-            <h3 data-id="code-title">Thank you</h3>
-
-            <p class="fragment">Just kiddin</p>
-
-            <p class="fragment">Lets dive into Lightning</p>
-        </section>
-
-        <section data-auto-animate>
-            <h3 data-id="code-title">The main principle</h3>
-
-            <p class="fragment" >You do the cool staff</p>
-
-            <p class="fragment" >Lightning takes care of the boilerplate</p>
-        </section>
-
-        <section data-auto-animate>
-            <h3 data-id="code-title">Let's see that in action</h3>
-
-            <pre data-id="code-animation" class="fragment"><code class="python" data-trim
-                                                                 data-line-numbers="1, 2, 4, 7, 8">
-for epoch in range(EPOCHS):
-    for i, data in enumerate(trainloader, 0):
-        inputs, labels = data
-        optimizer.zero_grad()
-        outputs = net(inputs)
-        loss = criterion(outputs, labels)
-        loss.backward()
-        optimizer.step()
-        ...
-					</code></pre>
-
-            <p class="fragment">Lightning takes care about all this boilerplate</p>
-        </section>
-
-
-        <section data-auto-animate>
-            <h4 data-id="code-title">Standard pl.LightningModule class</h4>
-
-            <pre data-id="code-animation" class="fragment" ><code class="python" data-trim data-line-numbers>
-class CustomClassifier(pl.LightningModule):
-
-    def __init__(self):
-        super().__init__()
-        self.criterion = nn.CrossEntropyLoss()
-        self.fc1 = nn.Linear(784, 10)
-
-    def forward(self, x):
-        return self.fc1(x)
-
-    def training_step(self, batch, batch_idx):
-        x, y = batch
-        logits = self.forward(x)
-
-        loss = self.criterion(logits, y)
-        tensorboard_logs = {'train_loss': loss}
-
-        return {'loss': loss, 'log': tensorboard_logs}
-
-    def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.parameters(), lr=1e-3)
-        scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
-
-        return [optimizer], [scheduler]
-					</code></pre>
-
-            <p class="fragment">Actually</p>
-
-            <p class="fragment">That is all you need to train the model</p>
-        </section>
-
-
-        <section data-auto-animate>
-            <h3 data-id="code-title">How about data?</h3>
-
-            <pre data-id="code-animation" class="fragment"><code class="python" data-trim data-line-numbers>
-class CustomDatamodule(pl.LightningDataModule):
-    def __init__(self, batch_size):
-        super().__init__()
-        self.batch_size = batch_size
-
-    def setup(self, stage=None):
-        self.train_set = StandardTorchDataset(train=True)
-
-        self.val_set = StandardTorchDataset(train=False)
-
-    def train_dataloader(self):
-        return DataLoader(self.train_set,
-                batch_size=self.batch_size,
-                shuffle=True, num_workers=4)
-
-    def val_dataloader(self):
-        return DataLoader(self.val_set,
-                batch_size=self.batch_size,
-                shuffle=False, num_workers=4)
-					</code></pre>
-
-        </section>
-
-        <section data-auto-animate>
-            <h2 data-id="code-title">Training loop</h2>
-
-            <pre data-id="code-animation" class="fragment"><code class="python" data-trim data-line-numbers>
-model = CustomClassifier()
-dm = CustomDatamodule(batch_size=21)
-
-trainer = pl.Trainer()
-trainer.fit(model, dm, epochs=37)
+            <pre data-id="code-animation" class="fragment"><code class="hljs" data-trim
+                                                                 data-line-numbers="1, 2, 7, 8">
+model = model.to(device) # Not this one
+model = nn.DataParallel(model, devices_id=[0,1,2,3]) # This
 					</code></pre>
         </section>
 
-        <section data-auto-animate>
-            <h3 data-id="code-title">Something more sophisticated?</h3>
-
-            <p data-id="code-title">How can I train on multiple GPUs?</p>
-
-            <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers>
-# dp = DataParallel
-trainer = Trainer(gpus=2, distributed_backend='dp')
-
-# ddp = DistributedDataParallel
-trainer = Trainer(gpus=2, num_nodes=2, distributed_backend='ddp')
-
-# ddp2 = DistributedDataParallel + dp
-trainer = Trainer(gpus=2, num_nodes=2, distributed_backend='ddp2')
-                            </code></pre>
-        </section>
-
-        <section data-auto-animate>
-                    <h3 data-id="code-title">Maybe TPU?</h3>
-
-                    <pre class="fragment" data-id="code-animation"><code class="python" data-trim data-line-numbers>
-        trainer = pl.Trainer(tpu_cores=8)
-        trainer.fit(model, dm)
-                                    </code></pre>
-        </section>
-
-
-        <section data-auto-animate>
-                    <h3 data-id="code-title">Anything more?</h3>
-        </section>
-
-        <section data-background-iframe="https://pytorch-lightning.readthedocs.io/en/stable/training_tricks.html"
-                 data-background-interactive></section>
-
-        <section data-background-iframe="https://pytorch-lightning.readthedocs.io/en/stable/callbacks.html#built-in-callbacks"
-                 data-background-interactive></section>
-
-        <section data-background-iframe="https://pytorch-lightning.readthedocs.io/en/stable/debugging.html#fast-dev-run"
-                 data-background-interactive></section>
-
-        <section data-background-iframe="https://pytorch-lightning.readthedocs.io/en/stable/logging.html#tensorboard"
-                 data-background-interactive></section>
-
-        <section data-background-iframe="https://pytorch-lightning.readthedocs.io/en/stable/weights_loading.html#automatic-saving/"
-                 data-background-interactive></section>
-
-
-        <section data-background-iframe="https://pytorch-lightning.readthedocs.io/en/latest/amp.html#gpu-16-bit"
-                 data-background-interactive></section>
-
-        <section>
-            <h3>And many others</h3>
-            <p>Check out the official documentation at: <a href="https://pytorch-lightning.readthedocs.io/en/stable/">https://pytorch-lightning.readthedocs.io/en/stable/</a></p>
-        </section>
-
-        <section>
-            <h3>Summary</h3>
-
-            <p class="fragment">Universal template for designing the training loops</p>
-            <p class="fragment">Advanced DL tricks out of the box</p>
-            <p class="fragment">You care about cool staff, lightning handles everything else</p>
-
-        </section>
-
-
-        <section>
+        <section data-background-transition="zoom">
             <h3>Thank you for your time</h3>
             <p>Feel free to ask any question</p>
             <p>
-                <small>Piotr Mazurek</small><br/>
-                <small>Presentation available at:<br> <a href="https://tugot17.github.io/Pytorch-Lightning-Presentation">tugot17.github.io/Pytorch-Lightning-Presentation</a></small><br/>
+                <small>Binh Nguyen</small><br/>
+                <small>Presentation available at:<br> <a
+                        href="https://beandkay.github.io/#">beandkay.github.io/#</a></small><br/>
             </p>
         </section>
-</div>
+    </div>
 
 
-<script src="dist/reveal.js"></script>
-<script src="plugin/notes/notes.js"></script>
-<script src="plugin/markdown/markdown.js"></script>
-<script src="plugin/highlight/highlight.js"></script>
-<script src="plugin/math/math.js"></script>
-<script>
-    // More info about config & dependencies:
-    // - https://github.com/hakimel/reveal.js#configuration
-    // - https://github.com/hakimel/reveal.js#dependencies
-    Reveal.initialize({
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/math/math.js"></script>
+    <script>
+      // More info about config & dependencies:
+      // - https://github.com/hakimel/reveal.js#configuration
+      // - https://github.com/hakimel/reveal.js#dependencies
+      Reveal.initialize({
         hash: true,
         controls: true,
         progress: true,
@@ -496,14 +222,14 @@ trainer = Trainer(gpus=2, num_nodes=2, distributed_backend='ddp2')
         backgroundTransition: 'fade', // none/fade/slide/convex/concave/zoom
         display: 'block',
         math: {
-            mathjax: 'plugin/math/MathJax.js',
-            config: 'TeX-AMS_HTML-full', // See http://docs.mathjax.org/en/latest/config-files.html
-            // pass other options into `MathJax.Hub.Config()`
-            TeX: {Macros: {RR: "{\\bf R}"}}
+          mathjax: 'plugin/math/MathJax.js',
+          config: 'TeX-AMS_HTML-full', // See http://docs.mathjax.org/en/latest/config-files.html
+          // pass other options into `MathJax.Hub.Config()`
+          TeX: {Macros: {RR: '{\\bf R}'}},
         },
-        plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMath]
-    });
-</script>
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMath],
+      });
+    </script>
 </body>
 </html>
 

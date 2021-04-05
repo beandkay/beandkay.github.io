@@ -391,11 +391,11 @@ model = nn.DataParallel(model, device_ids=[0,1,2,3]) # This
 
         <section data-background-transition="zoom" data-auto-animate>
             <h3 data-id="code-title13">Transfer learning for Computer Vision</h3>
-            <p class="fragment">
+            <p>
                 <h4>Finetuning the convnet</h4>
                 <p>Instead of random initializaion, we initialize the network with a pretrained network, like the one that is trained on imagenet 1000 dataset. Rest of the training looks as usual.</p>
             </p>
-            <p class="fragment">
+            <p>
                 <h4>ConvNet as fixed feature extractor</h4>
                 <p>Here, we will freeze the weights for all of the network except that of the final fully connected layer. This last fully connected layer is replaced with a new one with random weights and only this layer is trained.</p>
             </p>
@@ -403,7 +403,7 @@ model = nn.DataParallel(model, device_ids=[0,1,2,3]) # This
 
         <section data-background-transition="zoom" data-auto-animate>
             <h3 data-id="code-title13">Transfer learning for Computer Vision</h3>
-            <h4 class="fragment">Finetuning the convnet</h4>
+            <h>Finetuning the convnet</h4>
             <pre data-id="code-animation14">
                 <code class="hljs" data-trim data-line-numbers>
 model_ft =  models.resnet18(pretrained=True)
@@ -424,7 +424,7 @@ optimizer_ft = optim.SGD(model_ft.parameters(), lr=0.001, momentum=0.9)
 
         <section data-background-transition="zoom" data-auto-animate>
             <h3 data-id="code-title13">Transfer learning for Computer Vision</h3>
-            <h4 class="fragment">Finetuning the convnet</h4>
+            <h4>Finetuning the convnet</h4>
             <pre data-id="code-animation15">
                 <code class="hljs" data-trim data-line-numbers>
 model_conv = torchvision.models.resnet18(pretrained=True)

@@ -403,7 +403,7 @@ model = nn.DataParallel(model, device_ids=[0,1,2,3]) # This
 
         <section data-background-transition="zoom" data-auto-animate>
             <h3 data-id="code-title13">Transfer learning for Computer Vision</h3>
-            <h>Finetuning the convnet</h4>
+            <h4>Finetuning the convnet</h4>
             <pre data-id="code-animation14">
                 <code class="hljs" data-trim data-line-numbers>
 model_ft =  models.resnet18(pretrained=True)
@@ -444,6 +444,62 @@ criterion = nn.CrossEntropyLoss()
 optimizer_conv = optim.SGD(model_conv.fc.parameters(), lr=0.001, momentum=0.9)
                 </code>
             </pre>
+        </section>
+
+        <section data-auto-animate>
+            <h3 data-id="code-title14">More ...</h3>
+
+            <p class="fragment">I heard that the lr scheduler is a cool feature</p>
+
+            <p class="fragment">Can we add that?</p>
+
+            <pre data-id="code-animation16" class="fragment"><code class="hljs" data-trim data-line-numbers="1, 11">
+scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
+for epoch in range(EPOCHS):
+    for i, data in enumerate(trainloader, 0):
+        inputs, labels = data
+        optimizer.zero_grad()
+
+        outputs = net(inputs)
+        loss = criterion(outputs, labels)
+        loss.backward()
+        optimizer.step()
+        scheduler.step()
+					</code></pre>
+        </section>
+
+        <section data-auto-animate>
+            <h3 data-id="code-title">And ...</h3>
+
+            <p class="fragment">We should use transformations for images, right?</p>
+
+            <p class="fragment">Can we add that?</p>
+
+            <pre data-id="code-animation" class="fragment"><code class="hljs" data-trim data-line-numbers>
+from torchvision import datasets, models, transforms
+data_transforms = {
+    'train': transforms.Compose([
+        transforms.RandomResizedCrop(224),
+        transforms.RandomHorizontalFlip(),
+        transforms.ToTensor(),
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    ]),
+    'val': transforms.Compose([
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    ]),
+}
+
+data_dir = 'data/hymenoptera_data'
+image_datasets = {x: datasets.ImageFolder(os.path.join(data_dir, x),
+                                          data_transforms[x])
+                  for x in ['train', 'val']}
+dataloaders = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=4,
+                                             shuffle=True, num_workers=4)
+              for x in ['train', 'val']}
+					</code></pre>
         </section>
 
         <section data-background-transition="zoom">

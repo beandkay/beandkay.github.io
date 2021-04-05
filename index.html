@@ -218,10 +218,10 @@ output = m(input)
             </p>
             <pre data-id="code-animation6" class="fragment">
                 <code class="hljs" data-trim data-line-numbers>
-a = torch.randint(256).reshape(4,4,4,4)
+a = torch.randn(4, 4, 4, 4)
 conv = nn.Conv2d(4, 32, kernel_size=3, stride=1, padding=0)
 b = conv(a)
-print(b)
+print(b.shape)
                 </code>
             </pre>
         </section>
@@ -263,7 +263,7 @@ torch.nn.AdaptiveAvgPool2d(output_size)
                 <code class="hljs" data-trim data-line-numbers>
 pool = nn.MaxPool2d(kernel_size=2, padding=0)
 c = pool(b)
-print(c)
+print(c.shape)
                 </code>
             </pre>
         </section>

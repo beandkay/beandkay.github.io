@@ -40,6 +40,8 @@
                 <li class="fragment">torch.nn.functional (Core neural networks functions library)</li>
                 <li class="fragment">torch.utils (Utilities library)</li>
                 <li class="fragment">torchvision (Core vision library)</li>
+                <li class="fragment">torchvision.models (Vision models library)</li>
+                <li class="fragment">torchvision.transform (Vision transformation library)</li>
             </ul>
         </section>
 
@@ -73,9 +75,9 @@ optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
 optimizer = optim.Adam([var1, var2], lr=0.0001)
 
 optimizer = optim.SGD([
-    {'params': model.base.parameters()},
-    {'params': model.classifier.parameters(), 'lr': 1e-3}
-    ], lr=1e-2, momentum=0.9)
+                {'params': model.base.parameters()},
+                {'params': model.classifier.parameters(), 'lr': 1e-3}
+                ], lr=1e-2, momentum=0.9)
 
 criterion = nn.CrossEntropyLoss()
 criterion = nn.BCELoss()
@@ -104,76 +106,77 @@ for epoch in range(EPOCHS):
         </section>
 
         <section data-background-transition="zoom" data-auto-animate>
+            <section>
             <h3 data-id="code-title2">Popular computer vision layers</h3>
             <p class="fragment">Convolution layers</p>
-            <ul class="fragment">
-                <li>nn.Conv1d</li>
-                <li>nn.Conv2d</li>
-                <li>nn.Conv3d</li>
-            </ul>
+                <ul class="fragment">
+                    <li>nn.Conv1d</li>
+                    <li>nn.Conv2d</li>
+                    <li>nn.Conv3d</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3 data-id="code-title2">Popular computer vision layers</h3>
+                <p class="fragment">Pooling layers</p>
+                <ul class="fragment">
+                    <li>nn.MaxPool1d</li>
+                    <li>nn.MaxPool2d</li>
+                    <li>nn.MaxPool3d</li>
+                </ul>
+                <ul class="fragment">
+                    <li>nn.AvgPool1d</li>
+                    <li>nn.AvgPool2d</li>
+                    <li>nn.AvgPool3d</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3 data-id="code-title2">Popular computer vision layers</h3>
+                <p class="fragment">Dropout layers</p>
+                <ul class="fragment">
+                    <li>nn.Dropout</li>
+                    <li>nn.Dropout2d</li>
+                    <li>nn.Dropout3d</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3 data-id="code-title2">Popular computer vision layers</h3>
+                <p class="fragment">Normalization layers</p>
+                <ul class="fragment">
+                    <li>nn.BatchNorm1d</li>
+                    <li>nn.BatchNorm2d</li>
+                    <li>nn.BatchNorm3d</li>
+                    <li>nn.GroupNorm</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3 data-id="code-title2">Popular computer vision layers</h3>
+                <p class="fragment">Non-linear Activations</p>
+                <ul class="fragment">
+                    <li>nn.ReLU</li>
+                    <li>nn.Sigmoid</li>
+                </ul>
+            </section>
         </section>
 
-        <section data-background-transition="zoom" data-auto-animate>
-            <h3 data-id="code-title2">Popular computer vision layers</h3>
-            <p class="fragment">Pooling layers</p>
-            <ul class="fragment">
-                <li>nn.MaxPool1d</li>
-                <li>nn.MaxPool2d</li>
-                <li>nn.MaxPool3d</li>
-            </ul>
-            <ul class="fragment">
-                <li>nn.AvgPool1d</li>
-                <li>nn.AvgPool2d</li>
-                <li>nn.AvgPool3d</li>
-            </ul>
-        </section>
-
-        <section data-background-transition="zoom" data-auto-animate>
-            <h3 data-id="code-title2">Popular computer vision layers</h3>
-            <p class="fragment">Dropout layers</p>
-            <ul class="fragment">
-                <li>nn.Dropout</li>
-                <li>nn.Dropout2d</li>
-                <li>nn.Dropout3d</li>
-            </ul>
-        </section>
-
-        <section data-background-transition="zoom" data-auto-animate>
-            <h3 data-id="code-title2">Popular computer vision layers</h3>
-            <p class="fragment">Normalization layers</p>
-            <ul class="fragment">
-                <li>nn.BatchNorm1d</li>
-                <li>nn.BatchNorm2d</li>
-                <li>nn.BatchNorm3d</li>
-                <li>nn.GroupNorm</li>
-            </ul>
-        </section>
-
-        <section data-background-transition="zoom" data-auto-animate>
-            <h3 data-id="code-title2">Popular computer vision layers</h3>
-            <p class="fragment">Non-linear Activations</p>
-            <ul class="fragment">
-                <li>nn.ReLU</li>
-                <li>nn.Sigmoid</li>
-                <li>nn.ELU</li>
-            </ul>
-        </section>
-        
         <section data-background-transition="zoom" data-auto-animate>
             <h3 data-id="code-title3">Implementation details</h3>
             <p class="fragment">Convolution layer</p>
             <pre data-id="code-animation4" class="fragment">
                 <code class="hljs" data-trim data-line-numbers>
 torch.nn.Conv2d(
-    in_channels, 
-    out_channels, 
-    kernel_size, 
-    stride=1, 
-    padding=0, 
-    dilation=1, 
-    groups=1, 
-    bias=True, 
-    padding_mode='zeros')
+                in_channels, 
+                out_channels, 
+                kernel_size, 
+                stride=1, 
+                padding=0, 
+                dilation=1, 
+                groups=1, 
+                bias=True, 
+                padding_mode='zeros')
                 </code>
             </pre>
         </section>
@@ -185,8 +188,8 @@ torch.nn.Conv2d(
                 <script type="math/tex">
                 - Input: \left(N, C_{\text{in}}, H_{\text{in}}, W_{\text{in}}\right)\\
                 - Output: \left(N, C_{\text{out}}, H_{\text{out}}, W_{\text{out}}\right) where\\
-                H_{out}=\left\lfloor\frac{H_{in}+2 \times \operatorname{padding}[0]-\operatorname{dilation}[0] \times(\operatorname{kernel\_size}[0]-1)-1}{\operatorname{stride}[0]}+1\right]\\
-                W_{out}=\left\lfloor\frac{W_{in}+2 \times \operatorname{padding}[1]-\operatorname{dilation}[1] \times(\operatorname{kernel\_size}[1]-1)-1}{\operatorname{stride}[1]}+1\right]\\
+                H_{out}=[\left\lfloor\frac{H_{in}+2 \times \operatorname{padding}[0]-\operatorname{dilation}[0] \times(\operatorname{kernel\_size}[0]-1)-1}{\operatorname{stride}[0]}+1\right]\\
+                W_{out}=[\left\lfloor\frac{W_{in}+2 \times \operatorname{padding}[1]-\operatorname{dilation}[1] \times(\operatorname{kernel\_size}[1]-1)-1}{\operatorname{stride}[1]}+1\right]\\
                 </script>
             </div>
         </section>
@@ -229,9 +232,9 @@ print(b)
             <pre data-id="code-animation7" class="fragment">
                 <code class="hljs" data-trim data-line-numbers>
 torch.nn.MaxPool2d(kernel_size, stride=None, padding=0, dilation=1, 
-    return_indices=False, ceil_mode=False)
+                    return_indices=False, ceil_mode=False)
 torch.nn.AvgPool2d(kernel_size, stride=None, padding=0, ceil_mode=False, 
-    count_include_pad=True, divisor_override=None)
+                    count_include_pad=True, divisor_override=None)
 torch.nn.AdaptiveMaxPool2d(output_size,return_indices=False)
 torch.nn.AdaptiveAvgPool2d(output_size)
                 </code>
@@ -243,10 +246,10 @@ torch.nn.AdaptiveAvgPool2d(output_size)
             <p class="fragment">Dimension calculation (non adaptive)</p>
             <div class="fragment">
                 <script type="math/tex">
-                - Input: \left(N, C_{\text{in}}, H_{\text{in}}, W_{\text{in}}\right)\\
-                - Output: \left(N, C_{\text{out}}, H_{\text{out}}, W_{\text{out}}\right) where\\
-                H_{out}=\left\lfloor\frac{H_{in}+2 \times \operatorname{padding}[0]-\operatorname{kernel\_size}[0]}{\operatorname{stride}[0]}+1\right]\\
-                W_{out}=\left\lfloor\frac{W_{in}+2 \times \operatorname{padding}[1]-\operatorname{kernel\_size}[1]}{\operatorname{stride}[1]}+1\right]\\
+                    - Input: \left(N, C_{\text{in}}, H_{\text{in}}, W_{\text{in}}\right)\\
+                    - Output: \left(N, C_{\text{out}}, H_{\text{out}}, W_{\text{out}}\right) where\\
+                    H_{out}=[\left\lfloor\frac{H_{in}+2 \times \operatorname{padding}[0]-\operatorname{dilation}[0] \times(\operatorname{kernel\_size}[0]-1)-1}{\operatorname{stride}[0]}+1\right]\\
+                    W_{out}=[\left\lfloor\frac{W_{in}+2 \times \operatorname{padding}[1]-\operatorname{dilation}[1] \times(\operatorname{kernel\_size}[1]-1)-1}{\operatorname{stride}[1]}+1\right]\\
                 </script>
             </div>
         </section>
@@ -266,8 +269,8 @@ print(c)
         </section>
 
         <section data-background-transition="zoom" data-auto-animate>
-            <h3 data-id="code-title4">One more thing, I need Tensorboard logging</h3>
-            <pre data-id="code-animation7" class="fragment"><code class="hljs" data-trim data-line-numbers="|1-2|5|12|16-19">
+            <h3 data-id="code-title6">One more thing, I need Tensorboard logging</h3>
+            <pre data-id="code-animation9" class="fragment"><code class="hljs" data-trim data-line-numbers="|1-2|5|12|16-19">
 from torch.utils.tensorboard import SummaryWriter
 writer = SummaryWriter()
 
@@ -291,8 +294,8 @@ for epoch in range(EPOCHS):
         </section>
 
         <section data-background-transition="zoom" data-auto-animate>
-            <h4 data-id="code-title">Actually, I would rather use W&B then Tensorboard, can we change that?</h4>
-            <pre data-id="code-animation" class="fragment"><code class="hljs" data-trim data-line-numbers="|1|5-8">
+            <h4 data-id="code-title7">Actually, I would rather use W&B then Tensorboard, can we change that?</h4>
+            <pre data-id="code-animation10" class="fragment"><code class="hljs" data-trim data-line-numbers="|1|5-8">
 import wandb
 for epoch in range(EPOCHS):
     ...
@@ -305,13 +308,13 @@ for epoch in range(EPOCHS):
         </section>
 
         <section data-background-transition="zoom" data-auto-animate>
-            <h3 data-id="code-title">You know what?</h3>
+            <h3 data-id="code-title8">You know what?</h3>
 
-            <p data-id="code-title">Nvidia gave us a GPU</p>
+            <p data-id="code-title9">Nvidia gave us a GPU</p>
 
-            <p data-id="code-title">Can we run this code using CUDA?</p>
+            <p data-id="code-title10">Can we run this code using CUDA?</p>
 
-            <pre data-id="code-animation" class="fragment"><code class="hljs" data-trim
+            <pre data-id="code-animation11" class="fragment"><code class="hljs" data-trim
                                                                  data-line-numbers="1, 2, 7, 8">
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -332,12 +335,115 @@ for epoch in range(EPOCHS):
         </section>
 
         <section data-background-transition="zoom">
-            <h3 data-id="code-title">And how to run that on multiple GPUs?</h3>
-            <pre data-id="code-animation" class="fragment"><code class="hljs" data-trim
+            <h3 data-id="code-title11">And how to run that on multiple GPUs?</h3>
+            <pre data-id="code-animation12" class="fragment"><code class="hljs" data-trim
                                                                  data-line-numbers="1, 2, 7, 8">
 model = model.to(device) # Not this one
 model = nn.DataParallel(model, device_ids=[0,1,2,3]) # This
 					</code></pre>
+        </section>
+
+        <section data-background-transition="zoom" data-auto-animate>
+            <section>
+                <h3 data-id="code-title12">Exercise 3</h3>
+                <p> Create a model contains:
+                <ul>
+                    <li>2 convolution layers with kernel size of 3</li>
+                    <li>1 max pooling layer with kernel size of 3 and stride 2</li>
+                    <li>1 ReLU layer</li>
+                    <li>1 batch normalization layer</li>
+                    <li>1 linear layer with 10 outputs</li>
+                </ul>
+                <div></div>
+                Define forward flow as 
+                <br>'conv1' -> 'bn' -> 'relu' -> 'pool' -> 'conv2' -> 'bn' -> 'relu' -> 'pool' -> 'fc'</br> Know that input size is (3,32,32)
+                </p>
+            </section>
+            <section>
+                <h3 data-id="code-title12">Exercise 3</h3>
+                <pre data-id="code-animation13">
+                    <code class="hljs" data-trim data-line-numbers="4|5|6|7|8|9|4-9|10-21|">
+    class Net(nn.Module):
+        def __init__(self):
+            super(Net, self).__init__()
+            self.conv1 = nn.Conv2d(3, 16, 3)
+            self.pool = nn.MaxPool2d(3, 2)
+            self.conv2 = nn.Conv2d(16, 32, 3)
+            self.fc1 = nn.Linear(32 * 5 * 5, 10)
+            self.bn = nn.BatchNorm2d()
+            self.relu = nn.ReLU()
+        def forward(self, x):
+            x = self.conv1(x) # (3,32,32) -> (16,30,30)
+            x = self.bn(x)
+            x = self.relu(x)
+            x = self.pool(x) # (16,30,30) -> (16,14,14)
+            x = self.conv2(x) # (16,14,14) -> (32,12,12) 
+            x = self.bn(x)
+            x = self.relu(x)
+            x = self.pool(x) # (32,12,12) -> (32,5,5)
+            x = x.view(-1, 32 * 5 * 5)
+            x = self.fc(x)
+            return x
+                    </code>
+                </pre>
+            </section>
+        </section>
+
+        <section data-background-transition="zoom" data-auto-animate>
+            <h3 data-id="code-title13">Transfer learning for Computer Vision</h3>
+            <p class="fragment">
+                <h4>Finetuning the convnet</h4>
+                <p>Instead of random initializaion, we initialize the network with a pretrained network, like the one that is trained on imagenet 1000 dataset. Rest of the training looks as usual.</p>
+            </p>
+            <p class="fragment">
+                <h4>ConvNet as fixed feature extractor</h4>
+                <p>Here, we will freeze the weights for all of the network except that of the final fully connected layer. This last fully connected layer is replaced with a new one with random weights and only this layer is trained.</p>
+            </p>
+        </section>
+
+        <section data-background-transition="zoom" data-auto-animate>
+            <h3 data-id="code-title13">Transfer learning for Computer Vision</h3>
+            <h4 class="fragment">Finetuning the convnet</h4>
+            <pre data-id="code-animation14">
+                <code class="hljs" data-trim data-line-numbers>
+model_ft =  models.resnet18(pretrained=True)
+num_ftrs = model_ft.fc.in_features
+# Here the size of each output sample is set to 2.
+# Alternatively, it can be generalized to nn.Linear(num_ftrs, len(class_names)).
+model_ft.fc = nn.Linear(num_ftrs, 2)
+
+model_ft = model_ft.to(device)
+
+criterion = nn.CrossEntropyLoss()
+
+# Observe that all parameters are being optimized
+optimizer_ft = optim.SGD(model_ft.parameters(), lr=0.001, momentum=0.9)
+                </code>
+            </pre>
+        </section>
+
+        <section data-background-transition="zoom" data-auto-animate>
+            <h3 data-id="code-title13">Transfer learning for Computer Vision</h3>
+            <h4 class="fragment">Finetuning the convnet</h4>
+            <pre data-id="code-animation15">
+                <code class="hljs" data-trim data-line-numbers>
+model_conv = torchvision.models.resnet18(pretrained=True)
+for param in model_conv.parameters():
+    param.requires_grad = False
+
+# Parameters of newly constructed modules have requires_grad=True by default
+num_ftrs = model_conv.fc.in_features
+model_conv.fc = nn.Linear(num_ftrs, 2)
+
+model_conv = model_conv.to(device)
+
+criterion = nn.CrossEntropyLoss()
+
+# Observe that only parameters of final layer are being optimized as
+# opposed to before.
+optimizer_conv = optim.SGD(model_conv.fc.parameters(), lr=0.001, momentum=0.9)
+                </code>
+            </pre>
         </section>
 
         <section data-background-transition="zoom">

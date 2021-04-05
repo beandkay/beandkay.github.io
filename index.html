@@ -424,7 +424,7 @@ optimizer_ft = optim.SGD(model_ft.parameters(), lr=0.001, momentum=0.9)
 
         <section data-background-transition="zoom" data-auto-animate>
             <h3 data-id="code-title13">Transfer learning for Computer Vision</h3>
-            <h4>Finetuning the convnet</h4>
+            <h4>ConvNet as fixed feature extractor</h4>
             <pre data-id="code-animation15">
                 <code class="hljs" data-trim data-line-numbers>
 model_conv = torchvision.models.resnet18(pretrained=True)
@@ -446,14 +446,31 @@ optimizer_conv = optim.SGD(model_conv.fc.parameters(), lr=0.001, momentum=0.9)
             </pre>
         </section>
 
+        <section data-background-transition="zoom" data-auto-animate>
+            <h3 data-id="code-title14">Exercise 4</h3>
+            <p class="fragment"> Create a model with pretrained Resnet-50 as backbone as features extractor, change the output dim of 'fc' to 10
+            </p>
+            <pre data-id="code-animation16" class="fragment">
+                <code class="hljs" data-trim data-line-numbers>
+model = torchvision.models.resnet50(pretrained=True)
+for param in model.parameters():
+    param.requires_grad = False
+
+# Parameters of newly constructed modules have requires_grad=True by default
+num_ftrs = model.fc.in_features
+model.fc = nn.Linear(num_ftrs, 10)
+                </code>
+            </pre>
+        </section>
+
         <section data-auto-animate>
-            <h3 data-id="code-title14">More ...</h3>
+            <h3 data-id="code-title15">More ...</h3>
 
             <p class="fragment">I heard that the lr scheduler is a cool feature</p>
 
             <p class="fragment">Can we add that?</p>
 
-            <pre data-id="code-animation16" class="fragment"><code class="hljs" data-trim data-line-numbers="1, 11">
+            <pre data-id="code-animation17" class="fragment"><code class="hljs" data-trim data-line-numbers="1, 11">
 scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
 for epoch in range(EPOCHS):
     for i, data in enumerate(trainloader, 0):
@@ -469,13 +486,13 @@ for epoch in range(EPOCHS):
         </section>
 
         <section data-auto-animate>
-            <h3 data-id="code-title">And ...</h3>
+            <h3 data-id="code-title16">And ...</h3>
 
             <p class="fragment">We should use transformations for images, right?</p>
 
             <p class="fragment">Can we add that?</p>
 
-            <pre data-id="code-animation" class="fragment"><code class="hljs" data-trim data-line-numbers>
+            <pre data-id="code-animation18" class="fragment"><code class="hljs" data-trim data-line-numbers="1|2-14|16-22">
 from torchvision import datasets, models, transforms
 data_transforms = {
     'train': transforms.Compose([

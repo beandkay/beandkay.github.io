@@ -214,7 +214,7 @@ output = m(input)
         <section data-background-transition="zoom" data-auto-animate>
             <h3 data-id="code-title4">Exercise 1</h3>
             <p class="fragment">Create a 4-dimensional tensor 'a' with (N, C, H, W) = (4,4,4,4), a convolution layer 'conv' with kernel size of 3, 
-                stride sets to 1 and padding set to 0, output channel is 32, then print out the value of output tensor after 'a' goes through 'conv'.
+                stride sets to 1 and padding set to 0, output channel is 32, then print out the shape of values of output tensor after 'a' goes through 'conv'.
             </p>
             <pre data-id="code-animation6" class="fragment">
                 <code class="hljs" data-trim data-line-numbers>
@@ -257,7 +257,7 @@ torch.nn.AdaptiveAvgPool2d(output_size)
         <section data-background-transition="zoom" data-auto-animate>
             <h3 data-id="code-title5">Exercise 2</h3>
             <p class="fragment"> Using the output of exercise 1, create a max pooling layer 'pool' with kernel sets to 2, padding equals 0, 
-                print out the value of output layer after 'b' goes through 'pool'.
+                print out the shape of values of output layer after 'b' goes through 'pool'.
             </p>
             <pre data-id="code-animation8" class="fragment">
                 <code class="hljs" data-trim data-line-numbers>
@@ -371,7 +371,7 @@ model = nn.DataParallel(model, device_ids=[0,1,2,3]) # This
             self.conv2 = nn.Conv2d(16, 32, 3)
             self.fc1 = nn.Linear(32 * 5 * 5, 10)
             self.bn = nn.BatchNorm2d()
-            self.relu = nn.ReLU()
+            self.relu = nn.ReLU(inplace=True)
         def forward(self, x):
             x = self.conv1(x) # (3,32,32) -> (16,30,30)
             x = self.bn(x)
@@ -517,6 +517,31 @@ dataloaders = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=4,
                                              shuffle=True, num_workers=4)
               for x in ['train', 'val']}
 					</code></pre>
+        </section>
+
+        <section data-background-transition="zoom">
+            <h3>Some useful Github repository</h3>
+            <h2>Classification models</h2>
+            <ul>
+                <li>https://github.com/rwightman/pytorch-image-models</li>
+                <li>https://github.com/osmr/imgclsmob</li>
+            </ul>
+            
+            <h2>object detection models</h2>
+            <ul>
+                <li>https://github.com/facebookresearch/detectron2</li>
+                <li>https://github.com/open-mmlab/mmdetection</li>
+            </ul>
+
+            <h2>Distillation</h2>
+            <ul>
+                <li>https://github.com/IntelLabs/distiller</li>
+            </ul>
+
+            <h2>Plotting neural networks</h2>
+            <ul>
+                <li>https://github.com/HarisIqbal88/PlotNeuralNet</li>
+            </ul>
         </section>
 
         <section data-background-transition="zoom">

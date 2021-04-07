@@ -213,7 +213,7 @@ output = m(input)
         
         <section data-background-transition="zoom" data-auto-animate>
             <h3 data-id="code-title4">Exercise 1</h3>
-            <p class="fragment">Create a 4-dimensional tensor 'a' with (N, C, H, W) = (4,4,4,4), a convolution layer 'conv' with kernel size of 3, 
+            <p class="fragment" style="text-align: left;">Create a 4-dimensional tensor 'a' with (N, C, H, W) = (4,4,4,4), a convolution layer 'conv' with kernel size of 3, 
                 stride sets to 1 and padding set to 0, output channel is 32, then print out the shape of values of output tensor after 'a' goes through 'conv'.
             </p>
             <pre data-id="code-animation6" class="fragment">
@@ -256,7 +256,7 @@ torch.nn.AdaptiveAvgPool2d(output_size)
         
         <section data-background-transition="zoom" data-auto-animate>
             <h3 data-id="code-title5">Exercise 2</h3>
-            <p class="fragment"> Using the output of exercise 1, create a max pooling layer 'pool' with kernel sets to 2, padding equals 0, 
+            <p class="fragment" style="text-align: left;"> Using the output of exercise 1, create a max pooling layer 'pool' with kernel sets to 2, padding equals 0, 
                 print out the shape of values of output layer after 'b' goes through 'pool'.
             </p>
             <pre data-id="code-animation8" class="fragment">
@@ -346,17 +346,18 @@ model = nn.DataParallel(model, device_ids=[0,1,2,3]) # This
         <section data-background-transition="zoom" data-auto-animate>
             <section>
                 <h3 data-id="code-title12">Exercise 3</h3>
-                <p> Create a model contains:
-                <ul>
-                    <li>2 convolution layers with kernel size of 3</li>
-                    <li>1 max pooling layer with kernel size of 3 and stride 2</li>
-                    <li>1 ReLU layer</li>
-                    <li>1 batch normalization layer</li>
-                    <li>1 linear layer with 10 outputs</li>
-                </ul>
-                <div></div>
-                Define forward flow as 
-                <br>'conv1' -> 'bn' -> 'relu' -> 'pool' -> 'conv2' -> 'bn' -> 'relu' -> 'pool' -> 'fc'</br> Know that input size is (3,32,32)
+                <p style="text-align: left;"> Create a model contains:
+                    <ul>
+                        <li>2 convolution layers with kernel size of 3</li>
+                        <li>1 max pooling layer with kernel size of 3 and stride 2</li>
+                        <li>1 ReLU layer</li>
+                        <li>1 batch normalization layer</li>
+                        <li>1 linear layer with 10 outputs</li>
+                    </ul>
+                    <div></div>
+                    Define forward flow as 
+                    <br>'conv1' -> 'bn' -> 'relu' -> 'pool' -> 'conv2' -> 'bn' -> 'relu' -> 'pool' -> 'fc'</br> 
+                    Know that input size is (3,32,32)
                 </p>
             </section>
             <section>
@@ -390,19 +391,23 @@ model = nn.DataParallel(model, device_ids=[0,1,2,3]) # This
         </section>
 
         <section data-background-transition="zoom" data-auto-animate>
-            <h3 data-id="code-title13">Transfer learning for Computer Vision</h3>
+            <h3 data-id="code-title13">Computer Vision transfer learning </h3>
             <p>
                 <h4>Finetuning the convnet</h4>
-                <p>Instead of random initializaion, we initialize the network with a pretrained network, like the one that is trained on imagenet 1000 dataset. Rest of the training looks as usual.</p>
-            </p>
-            <p>
-                <h4>ConvNet as fixed feature extractor</h4>
-                <p>Here, we will freeze the weights for all of the network except that of the final fully connected layer. This last fully connected layer is replaced with a new one with random weights and only this layer is trained.</p>
+                <p style="text-align: left;">Instead of random initialization, we initialize the network with a pretrained network, like the one that is trained on imagenet 1000 dataset. Rest of the training looks as usual.</p>
             </p>
         </section>
 
         <section data-background-transition="zoom" data-auto-animate>
-            <h3 data-id="code-title13">Transfer learning for Computer Vision</h3>
+            <h3 data-id="code-title13">Computer Vision transfer learning </h3>
+            <p>
+                <h4>ConvNet as fixed feature extractor</h4>
+                <p style="text-align: left;">Here, we will freeze the weights for all of the network except that of the final fully connected layer. This last fully connected layer is replaced with a new one with random weights and only this layer is trained.</p>
+            </p>
+        </section>
+
+        <section data-background-transition="zoom" data-auto-animate>
+            <h3 data-id="code-title13">Computer Vision transfer learning </h3>
             <h4>Finetuning the convnet</h4>
             <pre data-id="code-animation14">
                 <code class="hljs" data-trim data-line-numbers>
@@ -423,7 +428,7 @@ optimizer_ft = optim.SGD(model_ft.parameters(), lr=0.001, momentum=0.9)
         </section>
 
         <section data-background-transition="zoom" data-auto-animate>
-            <h3 data-id="code-title13">Transfer learning for Computer Vision</h3>
+            <h3 data-id="code-title13">Computer Vision transfer learning </h3>
             <h4>ConvNet as fixed feature extractor</h4>
             <pre data-id="code-animation15">
                 <code class="hljs" data-trim data-line-numbers>
@@ -448,7 +453,7 @@ optimizer_conv = optim.SGD(model_conv.fc.parameters(), lr=0.001, momentum=0.9)
 
         <section data-background-transition="zoom" data-auto-animate>
             <h3 data-id="code-title14">Exercise 4</h3>
-            <p class="fragment"> Create a model with pretrained Resnet-50 as backbone as features extractor, change the output dim of 'fc' to 10
+            <p class="fragment" style="text-align: left;"> Create a model with pretrained Resnet-50 as backbone as features extractor, change the output dim of 'fc' to 10
             </p>
             <pre data-id="code-animation16" class="fragment">
                 <code class="hljs" data-trim data-line-numbers>
@@ -522,24 +527,32 @@ dataloaders = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=4,
         <section data-background-transition="zoom">
             <h2>Some useful Github repository</h2>
             <h3>Classification models</h3>
-            <ul>
+            <ul style="text-align: left;">
                 <li>https://github.com/rwightman/pytorch-image-models</li>
                 <li>https://github.com/osmr/imgclsmob</li>
             </ul>
-            
+        </section>
+
+        <section data-background-transition="zoom">
+            <h2>Some useful Github repository</h2>
             <h3>object detection models</h3>
-            <ul>
+            <ul style="text-align: left;">
                 <li>https://github.com/facebookresearch/detectron2</li>
                 <li>https://github.com/open-mmlab/mmdetection</li>
             </ul>
+        </section>
 
+        <section data-background-transition="zoom">
+            <h2>Some useful Github repository</h2>
             <h3>Distillation</h3>
-            <ul>
+            <ul style="text-align: left;">
                 <li>https://github.com/IntelLabs/distiller</li>
             </ul>
+        </section>
 
+        <section data-background-transition="zoom">
             <h3>Plotting neural networks</h3>
-            <ul>
+            <ul style="text-align: left;">
                 <li>https://github.com/HarisIqbal88/PlotNeuralNet</li>
             </ul>
         </section>

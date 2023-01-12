@@ -6,7 +6,7 @@ excerpt: 'Dropout is adopted in many state-of-the-art Deep Neural Networks (DNNs
 date: 2022-07-13
 venue: 'IEEE Access'
 paperurl: 'https://ieeexplore.ieee.org/document/9828384'
-citation: '{Nguyen, Khanh-Binh and Choi, Jaehyuk and Yang, Joon-Sung (2022). &quot;Checkerboard Dropout: A Structured Dropout With Checkerboard Pattern for Convolutional Neural Networks.&quot; <i>IEEE Access</i>. 10.'
+citation: 'Nguyen, Khanh-Binh and Choi, Jaehyuk and Yang, Joon-Sung (2022). &quot;Checkerboard Dropout: A Structured Dropout With Checkerboard Pattern for Convolutional Neural Networks.&quot; <i>IEEE Access</i>. 10.'
 ---
 
 

@@ -7,10 +7,10 @@ proper weight initialization, they require several learnable scalars or accurate
 date: 2023-01-29
 venue: 'IEEE Access'
 paperurl: 'https://ieeexplore.ieee.org/document/9828384'
-citation: '{Nguyen, Khanh-Binh and Choi, Jaehyuk and Yang, Joon-Sung (2023). &quot;EUNNet: Efficient UN-normalized Convolution layer for stable training of Deep Residual Networks without Batch Normalization layer.&quot; <i>IEEE Access</i>. 10.'
+citation: 'Nguyen, Khanh-Binh and Choi, Jaehyuk and Yang, Joon-Sung (2023). &quot;EUNNet: Efficient UN-normalized Convolution layer for stable training of Deep Residual Networks without Batch Normalization layer.&quot; <i>IEEE Access</i>. 10.'
 ---
 
-[Download paper here](https://ieeexplore.ieee.org/document/9828384)
+[Download paper here](https://ieeexplore.ieee.org/document/xxx)
 
 Recommended citation:
 <pre>

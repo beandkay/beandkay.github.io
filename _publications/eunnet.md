@@ -3,7 +3,7 @@ title: "EUNNet: Efficient UN-normalized Convolution layer for stable training of
 collection: publications
 permalink: /publication/eunnet
 excerpt: 'This paper is about the EUNNet, an Efficient UN-normalized Neural Networks.'
-date: TBD
+date: 2023-01-29
 venue: 'IEEE Access'
 paperurl: 'https://ieeexplore.ieee.org/document/9828384'
 citation: '{Nguyen, Khanh-Binh and Choi, Jaehyuk and Yang, Joon-Sung (2023). &quot;EUNNet: Efficient UN-normalized Convolution layer for stable training of Deep Residual Networks without Batch Normalization layer.&quot; <i>IEEE Access</i>. 1(1).'

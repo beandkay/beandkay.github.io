@@ -11,8 +11,8 @@ redirect_from:
 
 Education
 ======
-* B.S. in Computer Science, Ho Chi Minh University of Technology, 2018
 * Ph.D in Electrical Engineering, Sungkyunkwan University, 2023 (expected)
+* B.S. in Computer Science, Ho Chi Minh University of Technology, 2018
 
 Work experience
 ======

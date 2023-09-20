@@ -5,15 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="18fe01d5-503f-4fb0-9708-fa031923bea0" name="Changes" comment="change template">
-      <change afterPath="$PROJECT_DIR$/assets/img/profile-img-2.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/img/profile-img-3.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/img/profile-img.jpeg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/css/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/img/profile-img.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/forms/Readme.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inner-page.html" beforeDir="false" afterPath="$PROJECT_DIR$/inner-page.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,7 +112,9 @@
       <workItem from="1695214117410" duration="1630000" />
       <workItem from="1695215855308" duration="1189000" />
       <workItem from="1695217049737" duration="1159000" />
-      <workItem from="1695222155315" duration="1443000" />
+      <workItem from="1695222155315" duration="1533000" />
+      <workItem from="1695223820089" duration="61000" />
+      <workItem from="1695223979948" duration="445000" />
     </task>
     <task id="LOCAL-00001" summary="change template">
       <option name="closed" value="true" />
@@ -129,7 +124,15 @@
       <option name="project" value="LOCAL" />
       <updated>1695215734055</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="change template">
+      <option name="closed" value="true" />
+      <created>1695223723400</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1695223723400</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
